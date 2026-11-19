@@ -16,6 +16,7 @@ function previewUrl(data){
 function formatTime(seconds){const n=Math.max(0,Math.round(seconds));return Math.floor(n/60)+':'+String(n%60).padStart(2,'0');}
 function updateExpiry(){
   if(!current||demo)return;
+  if(current.local){$('expires').textContent='当前设备本地预览';$('expiry-note').textContent='上传成功后会生成可分享的网页链接。';document.body.classList.remove('expired');return false;}
   const date=current.expires?new Date(current.expires):null;
   if(date&&Number.isFinite(date.getTime())){
     const left=date.getTime()-Date.now();
@@ -29,15 +30,15 @@ function updateExpiry(){
 }
 function show(data,isDemo=false){
   video.pause();video.removeAttribute('src');video.load();
-  current=data;demo=isDemo;document.body.classList.toggle('has-media',!isDemo);
+  current=data;demo=isDemo;document.body.classList.toggle('has-media',!isDemo);document.body.classList.toggle('shared-page',!isDemo&&!data.local&&!data.recordId);
   if(isDemo)video.setAttribute('poster','poster.jpg');else video.removeAttribute('poster');
   $('video-title').textContent=data.title||'分享的视频';document.title=$('video-title').textContent+' · ClipDock';
-  $('kind-label').textContent=isDemo?'试播空间':'已分享的视频';$('type-label').textContent=isDemo?'合成演示':'网页预览';
+  $('kind-label').textContent=isDemo?'试播空间':data.local?'本地视频':'已分享的视频';$('type-label').textContent=isDemo?'合成演示':data.local?'本地预览':'网页预览';
   $('stage-idle').hidden=true;$('copy-status').textContent='';$('duration').textContent='—';
   $('play-status').textContent='正在读取视频…';
-  $('copy-page').disabled=false;$('copy-source').disabled=false;
-  $('page-url').value=isDemo?baseUrl().href+'#demo':previewUrl(data);
-  $('source-url').value=data.src;
+  $('copy-page').disabled=!!data.local;$('copy-source').disabled=!!data.local;
+  $('page-url').value=data.local?'':isDemo?baseUrl().href+'#demo':previewUrl(data);
+  $('source-url').value=data.local?'':data.src;
   if(isDemo){$('expires').textContent='演示长期可用';$('expiry-note').textContent='自制合成画面与音频，可用于体验播放。';document.body.classList.remove('expired');}
   else if(updateExpiry()){$('play-status').textContent='视频已到预计到期时间，请重新生成分享链接。';return;}
   video.src=data.src;video.load();
@@ -66,4 +67,4 @@ $('copy-page').onclick=()=>copy('page-url','已复制预览页。对方打开链
 $('copy-source').onclick=()=>copy('source-url','已复制视频源地址，可用于需要直接读取视频的工具。');
 $('link-form').onsubmit=e=>{e.preventDefault();try{const data={src:sourceUrl($('input-url').value.trim()),title:$('input-title').value.trim()||'分享的视频'};const hash=new URL(previewUrl(data)).hash;if(location.hash===hash)show(data);else location.hash=hash;$('form-status').textContent='预览页已生成，可在播放器下方复制。';$('viewer').scrollIntoView({behavior:'smooth',block:'start'});}catch(error){$('form-status').textContent=error.message;}};
 window.addEventListener('hashchange',loadHash);setInterval(updateExpiry,30000);loadHash();
-for(const link of document.querySelectorAll('a[href="#about"],a[href="#link-form"]'))link.onclick=e=>{e.preventDefault();document.querySelector(link.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'});};
+for(const link of document.querySelectorAll('a[href="#about"],a[href="#link-form"],a[href="#uploads"]'))link.onclick=e=>{e.preventDefault();if(link.getAttribute('href')==='#uploads')document.body.classList.remove('shared-page');document.querySelector(link.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'});};

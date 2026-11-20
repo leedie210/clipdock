@@ -1,6 +1,6 @@
 'use strict';
 // Each record has its own key. Saving a new upload never rewrites older records.
-const MAX_UPLOAD_BYTES=200000000,SMALL_UPLOAD_BYTES=25000000;
+const MAX_UPLOAD_BYTES=500000000,SMALL_UPLOAD_BYTES=25000000;
 const clips=new Map(),clipRows=new Map(),objectUrls=new Map(),requests=new Map();
 let clipDb=null,activeUploads=0;
 const localInput=$('local-files'),dropZone=$('drop-zone');
@@ -174,7 +174,7 @@ async function addFiles(files){
   for(const file of files){
     if(!(file.type.startsWith('video/')||/\.(mp4|webm|mov|m4v|mkv|avi)$/i.test(file.name))||!file.size){rejected++;continue;}
     const extension=(file.name.match(/\.([a-z0-9]+)$/i)||[])[1]||'mp4';
-    const clip={id:crypto.randomUUID(),name:file.name.slice(0,200),size:file.size,created:new Date().toISOString(),file,uploadName:'video.'+extension.toLowerCase(),state:file.size>MAX_UPLOAD_BYTES?'local':'queued',error:file.size>MAX_UPLOAD_BYTES?'超过 200 MB · 可本地预览，分享请先压缩或截取片段':'',progress:0};
+    const clip={id:crypto.randomUUID(),name:file.name.slice(0,200),size:file.size,created:new Date().toISOString(),file,uploadName:'video.'+extension.toLowerCase(),state:file.size>MAX_UPLOAD_BYTES?'local':'queued',error:file.size>MAX_UPLOAD_BYTES?'超过 500 MB · 可本地预览，分享请先压缩或截取片段':'',progress:0};
     clips.set(clip.id,clip);saveClip(clip);renderClip(clip);if(!first)first=clip;
   }
   if(rejected)$('upload-feedback').textContent='已跳过 '+rejected+' 个空文件或非视频文件；有效视频已追加到列表。';

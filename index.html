@@ -8,14 +8,14 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://tdrop.link https://clipdock-storage-200.mintyvine25.chatgpt.site; media-src 'self' https: blob:; img-src 'self' data:; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
   <title>ClipDock · 视频预览与片段分享</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=2">
-  <script src="app.js?v=2" defer></script>
-  <script src="uploads.js?v=2" defer></script>
+  <link rel="stylesheet" href="style.css?v=3">
+  <script src="app.js?v=3" defer></script>
+  <script src="uploads.js?v=3" defer></script>
 </head>
 <body>
   <header class="site-header wrap">
     <a class="brand" href="./" aria-label="ClipDock 首页"><span class="brand-mark" aria-hidden="true">C<span></span></span><span>ClipDock<small>视频预览与片段分享</small></span></a>
-    <nav aria-label="主导航"><a href="#uploads">上传视频</a><a href="#about">关于项目</a><a href="https://github.com/leedie210/reading-room" target="_blank" rel="noopener noreferrer">素材工具源码</a></nav>
+    <nav aria-label="主导航"><a href="https://clipdock-storage-200.mintyvine25.chatgpt.site/library">长期素材库</a><a href="#uploads">临时上传</a><a href="#about">关于项目</a><a href="https://github.com/leedie210/reading-room" target="_blank" rel="noopener noreferrer">素材工具源码</a></nav>
   </header>
   <main class="wrap">
     <section class="intro" id="intro">
@@ -26,7 +26,7 @@
     <section class="uploads" id="uploads" aria-labelledby="upload-title">
       <div class="upload-heading"><div><p class="eyebrow">YOUR CLIPS, TOGETHER</p><h2 id="upload-title">把视频拖进来，一个也不挤掉。</h2></div><span class="type-label">24 小时临时分享</span></div>
       <div class="drop-zone" id="drop-zone"><span class="drop-symbol" aria-hidden="true">＋</span><div><strong>拖入本地视频，立即预览并生成链接</strong><p>支持多选、分批追加 · 每条视频都有独立的分享页</p></div><button class="primary" id="choose-files" type="button">选择视频</button><input id="local-files" type="file" accept="video/*,.mp4,.webm,.mov,.m4v,.mkv,.avi" multiple hidden></div>
-      <p class="upload-note">单个视频最多 200 MB，链接有效 24 小时。选择或拖入后自动上传：25 MB 以内使用 tdrop，更大视频使用 ClipDock 分片存储。大文件同一网络每小时最多 10 条、合计 1 GB。超过 200 MB 仍可本地预览。拿到链接的人可以观看。</p>
+      <p class="upload-note">单个视频最多 500 MB，链接有效 24 小时。选择或拖入后自动上传：25 MB 以内使用 tdrop，更大视频使用 ClipDock 分片存储。大文件同一网络每小时最多 10 条、合计 1 GB。超过 500 MB 仍可本地预览。拿到链接的人可以观看。</p>
       <p class="storage-status" id="storage-status" role="status">列表保存在当前浏览器，不会因上传新视频而替换。视频到期后仍保留记录。</p>
       <div class="library-heading"><h3>我的视频 <span id="upload-count">0</span></h3><span id="queue-status" role="status">可继续添加视频</span></div>
       <p id="upload-feedback" class="clip-feedback" role="status"></p><div id="upload-list" class="upload-list"></div><p id="upload-empty" class="upload-empty">还没有视频。可以一次拖入多个，也可以稍后继续添加。</p>
